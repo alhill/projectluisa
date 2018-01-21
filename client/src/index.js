@@ -6,10 +6,16 @@ import { Router, browserHistory } from 'react-router';
 import reduxThunk from 'redux-thunk';
 import routes from './routes';
 import { AUTH_USER } from './actions/types';
+import cookie from 'react-cookie';
 //For importing stylesheets -> import './public/stylesheets/pollasenvinagre.scss';
 
 const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
 const store = createStoreWithMiddleware(reducers);
+
+const token = cookie.load('token');
+if(token) {
+  store.dispatch({ type: AUTH_USER });
+}
 
 ReactDOM.render(
     <Provider store={store}>
