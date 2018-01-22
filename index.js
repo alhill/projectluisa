@@ -5,6 +5,7 @@ const express = require('express'),
         logger = require('morgan'),
         mongoose = require('mongoose'),
         router = require('./router'),
+				passport = require('passport'),
         config = require('./config/main');
 
 //Start the server
@@ -27,6 +28,9 @@ app.use(function(req, res, next){
 
 //Database connection
 mongoose.connect(config.database);
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 //Add routes to Express app
 router(app);

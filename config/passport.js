@@ -17,7 +17,7 @@ const localLogin = new LocalStrategy(localOptions, function(email, password, don
 
         user.comparePassword(password, function(err, isMatch) {
             if(err) { return done(err); }
-            if(!isMatch) { return done(null, false, { error: "Your login details could not be verified. Please try again."}); }
+            if(!isMatch) { return done(null, false, { error: "Your login details could not be verified. Please try again." }); }
 
             return done(null, user);
         });
@@ -27,7 +27,7 @@ const localLogin = new LocalStrategy(localOptions, function(email, password, don
 //Setting up JWT auth options
 const jwtOptions = {
     //Telling Passport to check auth headers for JWT
-    jwtFromRequest: ExtractJwt.fromAuthHeader(),
+    jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme("jwt"),
     //Telling Passport where to find the secret
     secretOrKey: config.secret
 };
@@ -43,6 +43,17 @@ const jwtLogin = new JwtStrategy(jwtOptions, function(payload, done) {
         } else {
             done(null, false);
         }
+    });
+});
+
+//Passport middleware
+passport.serializeUser(function(user, done) {
+    done(null, user._id);
+});
+
+passport.deserializeUser(function(id, done) {
+    Employer.findById(id, function (err, user) {
+        done(err, user);
     });
 });
 

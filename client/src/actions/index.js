@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { browserHistory } from 'react-router';
-import cookie from 'react-cookie';
+import { deleteCookie, getCookie, setCookie } from '../util/cookie-utils';
 import { AUTH_USER,
         AUTH_ERROR,
+        CURRENT_USER,
         UNAUTH_USER,
         PROTECTED_TEST } from './types';
 
@@ -37,9 +37,11 @@ export function loginUser({ email, password }) {
     return function(dispatch) {
         axios.post(`${API_URL}/auth/login`, { email, password })
             .then(response => {
-                cookie.save('token', response.data.token, { path: '/' });
+                //console.log( response.data.user );
+								setCookie('token', response.data.token, { maxAge: response.tokenExpiration, path: '/' });
+                /*cookie.save('token', response.data.token, { path: '/' });*/
                 dispatch({ type: AUTH_USER });
-                window.location.href = CLIENT_ROOT_URL + '/dashboard'
+                window.location.href = '/dashboard'
             })
             .catch((error) => {
                 errorHandler(dispatch, error.response, AUTH_ERROR)
@@ -51,9 +53,9 @@ export function registerUser({ email, firstName, lastName, password }) {
     return function(dispatch) {
         axios.post(`${API_URL}/auth/register`, { email, firstName, lastName, password })
             .then(response => {
-                cookie.save('token', response.data.token, { path: '/' });
-                dispatch({ type: ATUH_USER });
-                window.location.href = CLIENT_ROOT_URL + '/dashboard';
+								setCookie('token', response.token, { maxAge: response.tokenExpiration });
+                dispatch({ type: AUTH_USER });
+                window.location.href = '/dashboard';
             })
             .catch((error) => {
                 errorHandler(dispatch, error.response, AUTH_ERROR)
@@ -62,17 +64,30 @@ export function registerUser({ email, firstName, lastName, password }) {
 }
 
 export function logoutUser() {
-    return function (dispatch) {
+    return function(dispatch) {
         dispatch({ type: UNAUTH_USER });
-        cookie.remove('token', { path: '/' });
-        window.location.href = CLIENT_ROOT_URL + '/login';
+				deleteCookie('token');
+        window.location.href = '/login';
+    }
+}
+
+export function currentUser() {
+    return function(dispatch) {
+        axios.get(`${API_URL}/currentuser`)
+            .then( response => {
+                dispatch({ 
+                    type: CURRENT_USER,
+                    payload: response.data.user
+                });
+            }
+        )
     }
 }
 
 export function protectedTest() {
     return function(dispatch) {
         axios.get(`${API_URL}/protected`, {
-            headers: { 'Authorization': cookie.load('token') }
+            headers: { 'Authorization': getCookie('token') }
         })
             .then(response => {
                 dispatch({

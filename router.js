@@ -1,4 +1,5 @@
 const AuthenticationController = require('./controllers/authentication'),
+		ProtectedController = require('./controllers/protected');
     express = require('express'),
     passportService = require('./config/passport'),
     passport = require('passport');
@@ -20,15 +21,18 @@ module.exports = function(app) {
 
     //Auth routes
     //===========
-    //Set auth routes as subgrouup/middleware to apiRoutes
-    apiRoutes.use('/auth', authRoutes);
+    //Set auth routes as subgroup/middleware to apiRoutes
+    apiRouter.use('/auth', authRoutes);
 
     //Registration route
     authRoutes.post('/register', AuthenticationController.register);
 
     //Login route
     authRoutes.post('/login', requireLogin, AuthenticationController.login);
+	
+		authRoutes.get("/api/protected", ProtectedController.prueba);
     
     //Set url for API group routes
-    app.use('/api', apiRoutes);
+    app.use('/api', apiRouter);
+		
 };

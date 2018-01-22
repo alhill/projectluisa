@@ -93,4 +93,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { register User })(form(Register));
+export default connect(mapStateToProps, { registerUser })(form(Register));

@@ -6,14 +6,21 @@ class Dashboard extends Component {
 
     constructor(props) {
         super(props);
-
-        this.props.protectedTest();
+        //this.props.protectedTest();
+    }
+    
+    componentWillMount() {
+        if(this.props.auth.authenticated){
+            this.props.currentUser();
+        }
     }
 
     renderContent() {
         if(this.props.content) {
             return (
-                <p>{this.props.content}</p>
+                <div>
+                    <p>{this.props.content}</p>
+                </div>
             );
         }
     }
@@ -22,13 +29,15 @@ class Dashboard extends Component {
         return (
             <div>
                 {this.renderContent()}
+                <button className="btn btn-primary" onClick={() => this.props.logoutUser()}>Logout</button>
             </div>
         );
     }
 }
 
-function mapStateToProps(state) {
-    return { content: state.auth.content };
+function mapStateToProps({ auth }){
+    console.log( auth );
+	return { auth };
 }
 
 export default connect(mapStateToProps, actions)(Dashboard);
