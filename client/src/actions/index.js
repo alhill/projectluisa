@@ -51,7 +51,7 @@ export function registerUser({ email, firstName, lastName, password }) {
     return function(dispatch) {
         axios.post(`${API_URL}/auth/register`, { email, firstName, lastName, password })
             .then(response => {
-				setCookie('token', response.token, { maxAge: response.tokenExpiration });
+				setCookie('token', response.data.token, { maxAge: response.tokenExpiration });
                 dispatch({ type: AUTH_USER });
                 window.location.href = '/dashboard';
             })
@@ -64,7 +64,7 @@ export function registerUser({ email, firstName, lastName, password }) {
 export function logoutUser() {
     return function(dispatch) {
         dispatch({ type: UNAUTH_USER });
-				deleteCookie('token');
+		deleteCookie('token');
         window.location.href = '/login';
     }
 }
@@ -74,6 +74,7 @@ export function currentUser() {
         axios.get(`${API_URL}/auth/currentuser`, {
             headers: { 'Authorization': getCookie('token') }
             }).then( response => {
+                console.log( getCookie('token') );
                 dispatch({ 
                     type: CURRENT_USER,
                     payload: response.data.user
