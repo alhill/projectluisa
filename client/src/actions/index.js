@@ -37,9 +37,7 @@ export function loginUser({ email, password }) {
     return function(dispatch) {
         axios.post(`${API_URL}/auth/login`, { email, password })
             .then(response => {
-                //console.log( response.data.user );
-								setCookie('token', response.data.token, { maxAge: response.tokenExpiration, path: '/' });
-                /*cookie.save('token', response.data.token, { path: '/' });*/
+				setCookie('token', response.data.token, { maxAge: response.tokenExpiration, path: '/' });
                 dispatch({ type: AUTH_USER });
                 window.location.href = '/dashboard'
             })
@@ -53,7 +51,7 @@ export function registerUser({ email, firstName, lastName, password }) {
     return function(dispatch) {
         axios.post(`${API_URL}/auth/register`, { email, firstName, lastName, password })
             .then(response => {
-								setCookie('token', response.token, { maxAge: response.tokenExpiration });
+				setCookie('token', response.token, { maxAge: response.tokenExpiration });
                 dispatch({ type: AUTH_USER });
                 window.location.href = '/dashboard';
             })
@@ -73,8 +71,9 @@ export function logoutUser() {
 
 export function currentUser() {
     return function(dispatch) {
-        axios.get(`${API_URL}/currentuser`)
-            .then( response => {
+        axios.get(`${API_URL}/auth/currentuser`, {
+            headers: { 'Authorization': getCookie('token') }
+            }).then( response => {
                 dispatch({ 
                     type: CURRENT_USER,
                     payload: response.data.user

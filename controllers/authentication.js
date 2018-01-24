@@ -85,6 +85,13 @@ exports.register = function(req, res, next) {
     });
 }
 
+exports.currentuser = function(req, res, next) {
+    const jwtToken = req.headers.authorization;
+    console.log( jwtToken );
+    const user = jwtToken !== 'undefined' ? jwt.verify( jwtToken.slice(4), config.secret ) : { undefined };
+    res.status(200).json({ user });
+}
+
 //Authorization Middleware (lo que quiera que sea eso)
 //===================================================
 //Role authorization check

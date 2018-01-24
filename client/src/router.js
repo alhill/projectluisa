@@ -11,6 +11,11 @@ import Dashboard from './components/dashboard';
 import RequireAuth from './components/auth/require-auth';
 
 class Router extends Component {
+
+	componentDidMount() {
+		this.props.currentUser();
+	}
+
 	render() {
 		return (
 			<div>
@@ -27,4 +32,8 @@ class Router extends Component {
 	}
 }
 
-export default connect(null, actions)(Router);
+function mapStateToProps({ auth }){
+	return { auth };
+}
+
+export default connect(mapStateToProps, actions)(Router);

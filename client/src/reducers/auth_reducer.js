@@ -15,6 +15,7 @@ export default function (state = INITIAL_STATE, action) {
         case UNAUTH_USER:
             return { ...state, authenticated: false };
         case CURRENT_USER:
+            console.log( action.payload );
             return { ...state, error: '', message: '', authenticated: true, user: action.payload }
         case AUTH_ERROR:
             return { ...state, error: action.payload };

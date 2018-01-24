@@ -11,9 +11,13 @@ class Dashboard extends Component {
     
     componentWillMount() {
         if(this.props.auth.authenticated){
-            this.props.currentUser();
+            //this.props.currentUser();
         }
     }
+	
+		componentWillReceiveProps(nextProps){
+			//console.log(nextProps);
+		}
 
     renderContent() {
         if(this.props.content) {
@@ -36,7 +40,6 @@ class Dashboard extends Component {
 }
 
 function mapStateToProps({ auth }){
-    console.log( auth );
 	return { auth };
 }
 

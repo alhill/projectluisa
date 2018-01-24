@@ -1,5 +1,5 @@
 const AuthenticationController = require('./controllers/authentication'),
-		ProtectedController = require('./controllers/protected');
+		ProtectedController = require('./controllers/protected'),
     express = require('express'),
     passportService = require('./config/passport'),
     passport = require('passport');
@@ -30,7 +30,9 @@ module.exports = function(app) {
     //Login route
     authRoutes.post('/login', requireLogin, AuthenticationController.login);
 	
-		authRoutes.get("/api/protected", ProtectedController.prueba);
+	authRoutes.get('/api/protected', ProtectedController.prueba);
+	
+	authRoutes.get('/currentuser', AuthenticationController.currentuser);
     
     //Set url for API group routes
     app.use('/api', apiRouter);
