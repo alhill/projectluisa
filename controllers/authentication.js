@@ -1,11 +1,11 @@
 const jwt = require('jsonwebtoken'),
     crypto = require('crypto'),
     User = require('../models/user'),
-    config = require('../config/main');
+    config = require('../config/keys');
 
 //Generate a JSON web token from the user object
 function generateToken(user) {
-    return jwt.sign(user, config.secret, {
+    return jwt.sign(user, config.cookieKey, {
         expiresIn: 10080 //seconds
     });
 }
@@ -88,7 +88,7 @@ exports.register = function(req, res, next) {
 exports.currentuser = function(req, res, next) {
     const jwtToken = req.headers.authorization;
     console.log( jwtToken );
-    const user = jwtToken !== 'undefined' ? jwt.verify( jwtToken.slice(4), config.secret ) : { undefined };
+    const user = jwtToken !== 'undefined' ? jwt.verify( jwtToken.slice(4), config.cookieKey ) : { undefined };
     res.status(200).json({ user });
 }
 

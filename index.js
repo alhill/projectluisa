@@ -6,12 +6,12 @@ const express = require('express'),
         mongoose = require('mongoose'),
         router = require('./router'),
 				passport = require('passport'),
-        config = require('./config/main');
+        config = require('./config/keys');
 
 //Start the server
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT);
-console.log('The server is running on port ' + config.port + '.');
+console.log('The server is running on port ' + PORT + '.');
 
 //Setting up basic middleware for all Express requests
 app.use(logger('dev')); //Log requests to API using morgan (que carajo es morgan?)
@@ -28,7 +28,7 @@ app.use(function(req, res, next){
 })
 
 //Database connection
-mongoose.connect(config.database);
+mongoose.connect(config.mongoURI);
 
 app.use(passport.initialize());
 app.use(passport.session());

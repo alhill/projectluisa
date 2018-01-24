@@ -1,7 +1,7 @@
 //Importing Passport, our strategies and the config files
 const passport = require('passport'),
     User = require('../models/user'),
-    config = require('./main'),
+    config = require('./keys'),
     JwtStrategy = require('passport-jwt').Strategy,
     ExtractJwt = require('passport-jwt').ExtractJwt,
     LocalStrategy = require('passport-local');
@@ -29,7 +29,7 @@ const jwtOptions = {
     //Telling Passport to check auth headers for JWT
     jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme("jwt"),
     //Telling Passport where to find the secret
-    secretOrKey: config.secret
+    secretOrKey: config.cookieKey
 };
 
 //Setting up JWT login strategy
