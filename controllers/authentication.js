@@ -86,9 +86,10 @@ exports.register = function(req, res, next) {
 }
 
 exports.currentuser = function(req, res, next) {
+    console.log( req );
     const jwtToken = req.headers.authorization;
     console.log( jwtToken );
-    const user = jwtToken !== 'undefined' ? jwt.verify( jwtToken.slice(4), config.cookieKey ) : { undefined };
+    const user = jwtToken ? jwt.verify( jwtToken.slice(4), config.cookieKey ) : { undefined };
     res.status(200).json({ user });
 }
 
