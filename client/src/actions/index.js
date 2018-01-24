@@ -6,7 +6,7 @@ import { AUTH_USER,
         UNAUTH_USER,
         PROTECTED_TEST } from './types';
 
-const API_URL = 'http://localhost:3000/api';
+const API_URL = '/api';
 
 export function errorHandler(dispatch, error, type) {
     let errorMessage = "";
