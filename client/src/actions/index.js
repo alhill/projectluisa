@@ -74,7 +74,7 @@ export function currentUser() {
         axios.get(`${API_URL}/auth/currentuser`, {
             headers: { 'Authorization': getCookie('token') }
             }).then( response => {
-                console.log( response );
+                console.log( response.data.user );
                 dispatch({ 
                     type: CURRENT_USER,
                     payload: response.data.user
