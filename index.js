@@ -33,19 +33,20 @@ mongoose.connect(config.mongoURI);
 app.use(passport.initialize());
 app.use(passport.session());
 
-console.log( process.env.NODE_ENV );
+//Add routes to Express app
+router(app);
+
 if (process.env.NODE_ENV === 'production') {
   // Express will serve up production assets like main.js
 	app.use(express.static('client/build'));
 	
 	// If not, Express will serve up index.html if it doesn't recognise the route
 	const path = require('path');
-	app.get('/*', (req, res) => {
+  app.get('*', (req, res) => {
 		res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
 	});
 	
 }
 
-//Add routes to Express app
-router(app);
+
 
