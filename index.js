@@ -9,7 +9,8 @@ const express = require('express'),
         config = require('./config/main');
 
 //Start the server
-const server = app.listen(config.port);
+const PORT = process.env.PORT || 5000;
+const server = app.listen(PORT);
 console.log('The server is running on port ' + config.port + '.');
 
 //Setting up basic middleware for all Express requests
