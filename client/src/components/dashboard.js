@@ -20,10 +20,10 @@ class Dashboard extends Component {
 		}
 
     renderContent() {
-        if(this.props.content) {
+        if(this.props.auth) {
             return (
                 <div>
-                    <p>{this.props.content}</p>
+                    <p>{`Hi ${this.props.auth.user.firstName} ${this.props.auth.user.lastName}!`}</p>
                 </div>
             );
         }
